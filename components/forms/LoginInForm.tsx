@@ -11,6 +11,8 @@ import useSWR from 'swr'
 import { useState } from 'react'
 import CustomFormField from '../CustomFormField'
 import SubmitButton from '../SubmitButton'
+import { signIn } from 'next-auth/react'
+import { getUserByEmail } from '@/lib/actions/auth'
 
 export enum FormFieldType {
   INPUT = 'input',
@@ -36,20 +38,51 @@ const LoginInForm = () => {
     },
   })
 
-  const onSubmit = async (data: any) => {
-    // const response = await loginWithEmail(data)
-    // if (response?.error) {
-    //   setError(response.error)
-    // } else {
-    //   router.push('/redirect')
-    // }
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    const formData = new FormData(e.currentTarget)
+    const email = formData.get('email') as string
+    const password = formData.get('password') as string
+
+    const existingUser = await getUserByEmail(email)
+    if (!existingUser) {
+      setError('User not found')
+      return
+    }
+
+    const res = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
+      callbackUrl: '/redirect',
+    })
+
+    if (res?.error) {
+      setError(res.error)
+    } else {
+      router.push(res?.url || '/')
+    }
+  }
+
+  const getErrorMessage = (error: string | null) => {
+    switch (error) {
+      case 'CredentialsSignin':
+        return 'Invalid email or password'
+      case 'Incorrect Password':
+        return 'Wrong password — please try again'
+      case 'User not found':
+        return 'No account found for that email'
+      default:
+        return 'Something went wrong. Please try again.'
+    }
   }
 
   return (
     <Form {...form}>
       <form
         //  action={loginWithEmail}
-        action={onSubmit}
+        onSubmit={handleSubmit}
         className='space-y-6 flex-1 bg-transparent'
       >
         <div className='relative'>
@@ -63,7 +96,9 @@ const LoginInForm = () => {
             iconAlt='email'
           />
           {error && (
-            <p className='text-red-500 text-center absolute pl-10'>{error}</p>
+            <p className='text-red-500 text-center absolute pl-10'>
+              {getErrorMessage(error)}
+            </p>
           )}
         </div>
 
