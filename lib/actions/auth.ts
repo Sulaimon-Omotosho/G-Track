@@ -2,11 +2,9 @@
 
 import AuthError from 'next-auth'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { db } from '../db'
 import { signIn, signOut } from 'next-auth/react'
 import { saltAndHashPassword } from '@/utils/helper'
-import { getSession } from 'next-auth/react'
 import { auth } from '../auth'
 
 // GET USER BY EMAIL
@@ -87,25 +85,11 @@ export const signUpWithEmail = async (formData: FormData) => {
       },
     })
 
-    const loginData = {
-      email: newUser.email,
-      password,
-      redirectTo: `/member/${newUser.id}/register`,
-    }
-
-    await signIn('credentials', loginData)
-
-    revalidatePath('/')
-
-    return { success: true }
+    return { success: true, user: { id: newUser.id } }
   } catch (error: any) {
     if (error instanceof AuthError) {
       return { error: 'Something went wrong during signup' }
     }
-    // else {
-    //   console.error('Unexpected error:', error)
-    //   return { error: 'An unexpected error occurred' }
-    // }
     throw error
   }
 }
