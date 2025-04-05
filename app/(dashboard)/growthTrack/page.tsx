@@ -4,11 +4,12 @@ import { CountChart } from '@/components/dashboard/CountChart'
 import EventCalendar from '@/components/dashboard/EventCalendar'
 import { FollowUpChart } from '@/components/dashboard/FollowUpChart'
 import UserCard from '@/components/dashboard/UserCard'
-import { auth } from '@/lib/auth'
+import { auth, authOptions } from '@/lib/auth'
+import { getServerSession } from 'next-auth'
 import React from 'react'
 
 const AdminDashboardPage = async () => {
-  const session = await auth()
+  const session = await getServerSession(authOptions)
 
   const countChartData = [
     { attribute: 'Zone1', desktop: 50, fill: '#C3EBFA' },

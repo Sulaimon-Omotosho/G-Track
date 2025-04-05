@@ -28,7 +28,7 @@ const RegisterForm = ({ userId, session }: RegisterFormProps) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof MemberFormValidation>>({
-    resolver: zodResolver(MemberFormValidation),
+    // resolver: zodResolver(MemberFormValidation),
     defaultValues: {
       name: '',
       email: session?.user?.email || '',
@@ -55,7 +55,6 @@ const RegisterForm = ({ userId, session }: RegisterFormProps) => {
         throw new Error('User ID is undefined')
       }
 
-      // // // Log the birthDate before attempting to parse it
       const birthDate = new Date(data.birthDate)
       if (isNaN(birthDate.getTime())) {
         throw new Error('Invalid date format for dob')
@@ -95,12 +94,14 @@ const RegisterForm = ({ userId, session }: RegisterFormProps) => {
         className='space-y-12 flex-1'
       >
         <section className='space-y-4'>
-          <h1 className='header'>Welcome 👋</h1>
-          <p className='text-dark-600'>Let us know more about you.</p>
+          <h1 className='text-3xl font-bold md:text-4xl'>Welcome 👋</h1>
+          <p className='text-gray-500'>Let us know more about you.</p>
         </section>
         <section className='space-y-6'>
           <div className='mb-9 space-y-1'>
-            <h2 className='sub-header'>Personal Information</h2>
+            <h2 className='text-lg font-bold md:text-2xl'>
+              Personal Information
+            </h2>
           </div>
 
           {/* FORM  */}
@@ -148,7 +149,10 @@ const RegisterForm = ({ userId, session }: RegisterFormProps) => {
                     defaultValue={field.value}
                   >
                     {MaritalStatus.map((option) => (
-                      <div className='radio-group' key={option}>
+                      <div
+                        className='flex h-full flex-1 items-center gap-2 rounded-md border border-dashed border-black bg-black p-3'
+                        key={option}
+                      >
                         <RadioGroupItem value={option} id={option} />
                         <Label htmlFor={option} className='cursor-pointer'>
                           {option}
@@ -181,7 +185,10 @@ const RegisterForm = ({ userId, session }: RegisterFormProps) => {
                     defaultValue={field.value}
                   >
                     {GenderOptions.map((option) => (
-                      <div className='radio-group' key={option}>
+                      <div
+                        className='flex h-full flex-1 items-center gap-2 rounded-md border border-dashed border-black bg-black p-3'
+                        key={option}
+                      >
                         <RadioGroupItem value={option} id={option} />
                         <Label htmlFor={option} className='cursor-pointer'>
                           {option}
@@ -213,7 +220,7 @@ const RegisterForm = ({ userId, session }: RegisterFormProps) => {
         </section>
         <section className='space-y-6'>
           <div className='mb-9 space-y-1'>
-            <h2 className='sub-header'>Other Information</h2>
+            <h2 className='text-lg font-bold md:text-2xl'>Other Information</h2>
           </div>
 
           <div className='flex flex-col gap-6 xl:flex-row'>
@@ -230,7 +237,10 @@ const RegisterForm = ({ userId, session }: RegisterFormProps) => {
                     defaultValue={field.value}
                   >
                     {NewConvert.map((option) => (
-                      <div className='radio-group' key={option}>
+                      <div
+                        className='flex h-full flex-1 items-center gap-2 rounded-md border border-dashed border-black bg-black p-3'
+                        key={option}
+                      >
                         <RadioGroupItem value={option} id={option} />
                         <Label htmlFor={option} className='cursor-pointer'>
                           {option}
@@ -275,7 +285,9 @@ const RegisterForm = ({ userId, session }: RegisterFormProps) => {
 
         <section className='space-y-6'>
           <div className='mb-9 space-y-1'>
-            <h2 className='sub-header'>Consent and Privacy</h2>
+            <h2 className='text-lg font-bold md:text-2xl'>
+              Consent and Privacy
+            </h2>
           </div>
 
           <CustomFormField
