@@ -44,6 +44,8 @@ model User {
   disclosureConsent         Boolean?
   accounts      Account[]
   sessions      Session[]
+  cellId    String? @db.ObjectId
+  cell          Cell?       @relation(fields: [cellId], references: [id])
   role      UserRole? @default(USER)
   // Optional for WebAuthn support
   Authenticator Authenticator[]
@@ -92,6 +94,37 @@ model VerificationToken {
   expires    DateTime
  
   @@unique([identifier, token])
+}
+
+model District {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String?
+  campus String @default("Gbagada")
+  communities Community[]
+}
+
+model Community {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String?
+  districtId String @db.ObjectId
+  district District @relation(fields: [districtId], references: [id])
+  zones Zone[]
+}
+
+model Zone {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String?
+  communityId String @db.ObjectId
+  community Community @relation(fields: [communityId], references: [id])
+  cell Cell[]
+}
+
+model Cell {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String?
+  zoneId String @db.ObjectId
+  zone Zone @relation(fields: [zoneId], references: [id])
+  user User[]
 }
  
 // Optional for WebAuthn support
