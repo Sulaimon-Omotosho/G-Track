@@ -128,6 +128,30 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
           </FormControl>
         </div>
       )
+    case FormFieldType.TIME_PICKER:
+      return (
+        <div className='flex rounded-md border border-black bg-black text-white'>
+          <Image
+            src='/icons/calendar.svg'
+            height={24}
+            width={24}
+            alt='calendar'
+            className='ml-2'
+          />
+          <FormControl>
+            <DatePicker
+              selected={field.value}
+              onChange={(date) => field.onChange(date)}
+              showTimeSelect
+              showTimeSelectOnly
+              timeIntervals={15}
+              timeCaption='Time'
+              dateFormat='h:mm aa'
+              wrapperClassName='overflow-hidden border-transparent w-full placeholder:text-white  h-11 text-14-medium rounded-md px-3 outline-none'
+            />
+          </FormControl>
+        </div>
+      )
     case FormFieldType.SKELETON:
       return renderSkeleton ? renderSkeleton(field) : null
 

@@ -113,3 +113,35 @@ export function getAppointmentSchema(type: string) {
       return ScheduleAppointmentSchema
   }
 }
+
+export const CreateAnnouncementSchema = z.object({
+  title: z.string().min(4, { message: 'Title must be at least 4 characters!' }),
+  from: z.string().min(5, { message: 'From is required!' }),
+  description: z.string().min(20, { message: 'Description is required!' }),
+  date: z.date({ message: 'Date is required!' }),
+  img: z
+    .any()
+    .refine((file) => file instanceof File, {
+      message: 'File is required',
+    })
+    .optional(),
+})
+
+export const CreateEventSchema = z.object({
+  title: z.string().min(4, { message: 'Title must be at least 4 characters!' }),
+  from: z.string().min(5, { message: 'From is required!' }),
+  description: z.string().min(20, { message: 'Description is required!' }),
+  date: z.date({ message: 'Date is required!' }),
+  startTime: z
+    .string()
+    .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time'),
+  endTime: z
+    .string()
+    .regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time'),
+  img: z
+    .any()
+    .refine((file) => file instanceof File, {
+      message: 'File is required',
+    })
+    .optional(),
+})
