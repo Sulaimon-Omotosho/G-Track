@@ -79,7 +79,7 @@ const LoginInForm = () => {
       return
     }
 
-    const role = existingUser.role
+    const role = existingUser.role?.toLowerCase()
 
     const res = await signIn('credentials', {
       redirect: false,
