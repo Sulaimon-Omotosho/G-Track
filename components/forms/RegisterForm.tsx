@@ -110,7 +110,7 @@ const RegisterForm = ({ userId, session }: RegisterFormProps) => {
             name='name'
             label='Full Name'
             placeholder='John Doe'
-            iconSrc='/assets/icons/user.svg'
+            iconSrc='/icons/user.svg'
             iconAlt='user'
           />
 
@@ -121,7 +121,7 @@ const RegisterForm = ({ userId, session }: RegisterFormProps) => {
               name='email'
               label='Email'
               placeholder={session?.user?.email!}
-              iconSrc='/assets/icons/email.svg'
+              iconSrc='/icons/email.svg'
               iconAlt='email'
             />
 

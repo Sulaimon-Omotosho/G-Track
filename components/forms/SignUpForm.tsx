@@ -60,7 +60,7 @@ const SignUpForm = () => {
             name='email'
             label='Email'
             placeholder='JohnDoe@email.com'
-            iconSrc='/assets/icons/email.svg'
+            iconSrc='/icons/email.svg'
             iconAlt='email'
           />
           {error && (
@@ -74,7 +74,7 @@ const SignUpForm = () => {
           name='password'
           label='Password'
           placeholder='Password'
-          iconSrc='/assets/icons/user.svg'
+          iconSrc='/icons/user.svg'
           iconAlt='user'
         />
 

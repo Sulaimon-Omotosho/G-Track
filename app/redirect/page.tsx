@@ -1,4 +1,4 @@
-import Logout from '@/components/Logout'
+import LogoutButton from '@/components/LogoutButton'
 import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth'
 import Image from 'next/image'
@@ -37,7 +37,7 @@ const RedirectPage = async () => {
             />
           )}
         </div>
-        <Logout />
+        <LogoutButton />
         {/* <h1 className='text-2xl font-extrabold'>Redirecting ...</h1> */}
       </div>
     </div>
