@@ -85,7 +85,7 @@ export const signUpWithEmail = async (formData: FormData) => {
       },
     })
 
-    return { success: true }
+    return { success: true, user: { id: newUser.id } }
   } catch (error: any) {
     if (error instanceof AuthError) {
       return { error: 'Something went wrong during signup' }

@@ -50,11 +50,13 @@ const LoginInForm = () => {
       return
     }
 
+    const userId = res?.user?.id
+
     const signInRes = await signIn('credentials', {
       redirect: false,
       email,
       password,
-      callbackUrl: '/redirect',
+      callbackUrl: `/member/${userId}/register`,
     })
 
     if (signInRes?.error) {
@@ -77,11 +79,13 @@ const LoginInForm = () => {
       return
     }
 
+    const role = existingUser.role
+
     const res = await signIn('credentials', {
       redirect: false,
       email,
       password,
-      callbackUrl: '/redirect',
+      callbackUrl: `/${role}`,
     })
 
     if (res?.error) {
