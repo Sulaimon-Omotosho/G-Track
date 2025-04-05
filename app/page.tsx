@@ -27,7 +27,6 @@ const Home = async () => {
         </div>
         {/* Form Container */}
         <div className=' flex flex-col gap-4 md:w-1/2 p-2'>
-          {/* <h1 className='font-bold text-center text-xl lg:text-3xl'>Log In</h1>      */}
           <LoginInForm />
           <div className=''>
             <p className='text-center pb-3'>Or</p>
