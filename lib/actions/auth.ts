@@ -67,6 +67,7 @@ export const loginWithEmail = async (formData: FormData) => {
   revalidatePath('/redirect')
 }
 
+// SIGN UP WITH EMAIL
 export const signUpWithEmail = async (formData: FormData) => {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
