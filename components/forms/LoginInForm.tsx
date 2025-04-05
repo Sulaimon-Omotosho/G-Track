@@ -56,7 +56,7 @@ const LoginInForm = () => {
       redirect: false,
       email,
       password,
-      callbackUrl: `/member/${userId}/register`,
+      callbackUrl: `/register`,
     })
 
     if (signInRes?.error) {
