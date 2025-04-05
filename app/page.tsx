@@ -1,6 +1,6 @@
 import LoginInForm from '@/components/forms/LoginInForm'
 import LoginGoogle from '@/components/LoginGoogle'
-import { auth, authOptions } from '@/lib/auth'
+import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
@@ -27,7 +27,6 @@ const Home = async () => {
         </div>
         {/* Form Container */}
         <div className=' flex flex-col gap-4 md:w-1/2 p-2'>
-          <h1 className='font-bold text-center text-xl lg:text-3xl'>Log In</h1>
           <LoginInForm />
           <div className=''>
             <p className='text-center pb-3'>Or</p>
