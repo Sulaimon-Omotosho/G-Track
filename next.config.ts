@@ -3,10 +3,19 @@ import path from 'path'
 
 const nextConfig: NextConfig = {
   images: {
-    domains: [
-      'avatars.githubusercontent.com',
-      'lh3.googleusercontent.com',
-      'images.pexels.com',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com',
+      },
     ],
   },
   webpack: (config) => {
