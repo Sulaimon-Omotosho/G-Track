@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
+import React, { useState } from 'react'
 import { z } from 'zod'
 import { Form, FormControl } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
@@ -9,6 +9,7 @@ import { CreateAnnouncementSchema } from '@/lib/validation'
 import CustomFormField from '../CustomFormField'
 import { FormFieldType } from './LoginInForm'
 import { UploadCloud } from 'lucide-react'
+import { communityOptions, districtOptions } from '@/constants'
 
 type Inputs = z.infer<typeof CreateAnnouncementSchema>
 
@@ -30,6 +31,13 @@ const AnnouncementForm = ({
     },
   })
 
+  const [scope, setScope] = useState<'GENERAL' | 'DISTRICT' | 'COMMUNITY'>(
+    'GENERAL'
+  )
+  const handleScopeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setScope(event.target.value as 'GENERAL' | 'DISTRICT' | 'COMMUNITY')
+  }
+
   const {
     register,
     handleSubmit,
@@ -43,7 +51,7 @@ const AnnouncementForm = ({
 
   return (
     <Form {...form}>
-      <form className='flex flex-col gap-8' onSubmit={onSubmit}>
+      <form className='flex flex-col gap-3' onSubmit={onSubmit}>
         <h1 className='text-xl font-semibold capitalize'>
           {type} Announcement
         </h1>
@@ -79,10 +87,6 @@ const AnnouncementForm = ({
             label='Date'
           />
         </div>
-
-        <span className='text-xs text-gray-400 font-medium'>
-          Announcement Description
-        </span>
         <div className='flex flex-col gap-4'>
           <div className='flex flex-col gap-6 xl:flex-row '>
             <CustomFormField
@@ -113,6 +117,36 @@ const AnnouncementForm = ({
               </p>
             )}
           </div>
+          <CustomFormField
+            fieldType={FormFieldType.SELECT}
+            control={form.control}
+            name='scope'
+            label='Scope'
+            options={[
+              { label: 'General', value: 'GENERAL' },
+              { label: 'District', value: 'DISTRICT' },
+              { label: 'Community', value: 'COMMUNITY' },
+            ]}
+            onChange={handleScopeChange}
+          />
+          {scope === 'DISTRICT' && (
+            <CustomFormField
+              fieldType={FormFieldType.SELECT}
+              control={form.control}
+              name='districtId'
+              label='District'
+              options={districtOptions}
+            />
+          )}
+          {scope === 'COMMUNITY' && (
+            <CustomFormField
+              fieldType={FormFieldType.SELECT}
+              control={form.control}
+              name='communityId'
+              label='Community'
+              options={communityOptions}
+            />
+          )}
         </div>
         <button className='bg-blue-400 text-white rounded-md p-2'>
           {type === 'create' ? 'Create' : 'Update'}

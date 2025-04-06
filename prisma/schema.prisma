@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -22,6 +17,13 @@ enum UserRole {
   LEADER
   USER
 }
+
+enum Scope {
+  GENERAL
+  DISTRICT
+  COMMUNITY
+}
+
   
 model User {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId
@@ -101,6 +103,13 @@ model District {
   name String?
   campus String @default("Gbagada")
   communities Community[]
+   
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Announcement Announcement[]
+
+  Event Event[]
 }
 
 model Community {
@@ -109,6 +118,11 @@ model Community {
   districtId String @db.ObjectId
   district District @relation(fields: [districtId], references: [id])
   zones Zone[]
+   
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Event Event[]
 }
 
 model Zone {
@@ -117,6 +131,9 @@ model Zone {
   communityId String @db.ObjectId
   community Community @relation(fields: [communityId], references: [id])
   cell Cell[]
+   
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Cell {
@@ -125,6 +142,46 @@ model Cell {
   zoneId String @db.ObjectId
   zone Zone @relation(fields: [zoneId], references: [id])
   user User[]
+   
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Announcement {
+  id  String  @id @default(auto()) @map("_id") @db.ObjectId
+  title   String
+  from  String
+  date  DateTime
+  desc  String
+  img   String?
+
+  scope   Scope    @default(GENERAL)
+  districtId String? @db.ObjectId
+  district   District? @relation(fields: [districtId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Event {
+  id  String  @id @default(auto()) @map("_id") @db.ObjectId
+  title   String
+  from  String
+  desc  String
+  img   String?
+  date  DateTime
+  startTime   DateTime
+  endTime   DateTime
+
+  scope      Scope    @default(GENERAL)
+  districtId String?  @db.ObjectId
+  communityId String? @db.ObjectId
+
+  district   District?  @relation(fields: [districtId], references: [id])
+  community  Community? @relation(fields: [communityId], references: [id])
+   
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
  
 // Optional for WebAuthn support

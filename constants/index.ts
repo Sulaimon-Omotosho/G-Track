@@ -657,3 +657,13 @@ export const calendarEvents = [
     end: new Date(2024, 7, 23, 14, 45),
   },
 ]
+
+export const districtOptions = [
+  { label: 'Mainland', value: '65a5fd...' },
+  { label: 'Island', value: '65a5fe...' },
+]
+
+export const communityOptions = [
+  { label: 'Shomolu', value: '65a6ff...' },
+  { label: 'Yaba', value: '65a6fa...' },
+]

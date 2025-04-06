@@ -17,11 +17,25 @@ import PhoneInput from 'react-phone-number-input'
 import { E164Number } from 'libphonenumber-js/core'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Select, SelectContent, SelectTrigger, SelectValue } from './ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select'
 import { Textarea } from './ui/textarea'
 import { Checkbox } from './ui/checkbox'
+import {
+  Key,
+  ReactElement,
+  JSXElementConstructor,
+  ReactNode,
+  ReactPortal,
+} from 'react'
 
 interface CustomProps {
+  options?: any
   control: Control<any>
   fieldType: FormFieldType
   name: string
@@ -34,6 +48,7 @@ interface CustomProps {
   showTimeSelect?: boolean
   children?: React.ReactNode
   renderSkeleton?: (field: any) => React.ReactNode
+  onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void
 }
 
 const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
@@ -160,12 +175,19 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
         <FormControl>
           <Select onValueChange={field.change} defaultValue={field.value}>
             <FormControl>
-              <SelectTrigger className='bg-black  placeholder:text-black border-black h-11 focus:ring-0 focus:ring-offset-0'>
-                <SelectValue placeholder={props.placeholder} />
+              <SelectTrigger className='bg-black  placeholder:text-white border-black h-11 focus:ring-0 focus:ring-offset-0 text-white'>
+                <SelectValue
+                  className='text-white'
+                  placeholder={props.placeholder}
+                />
               </SelectTrigger>
             </FormControl>
-            <SelectContent className='bg-black border-black'>
-              {props.children}
+            <SelectContent className='bg-black text-white border-black'>
+              {props.options?.map((option: { value: any; label: any }) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </FormControl>
@@ -207,7 +229,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
 }
 
 const CustomFormField = (props: CustomProps) => {
-  const { control, fieldType, name, label } = props
+  const { control, fieldType, name, label, onChange } = props
 
   return (
     <FormField

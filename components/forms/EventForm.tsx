@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Form } from '../ui/form'
@@ -9,6 +9,7 @@ import CustomFormField from '../CustomFormField'
 import { FormFieldType } from './LoginInForm'
 import { UploadCloud } from 'lucide-react'
 import { CreateEventSchema } from '@/lib/validation'
+import { communityOptions, districtOptions } from '@/constants'
 
 type Inputs = z.infer<typeof CreateEventSchema>
 
@@ -27,20 +28,27 @@ const EventForm = ({
   data?: any
 }) => {
   const form = useForm<Inputs>({
-    resolver: zodResolver(CreateEventSchema),
+    // resolver: zodResolver(CreateEventSchema),
     defaultValues: {
       title: data?.title || '',
       from: data?.from || '',
-      date: data?.date?.slice(0, 10) || '',
+      date: data?.date ? new Date(data.date) : undefined,
       startTime: data?.startTime
         ? toDateFromTimeString(data.startTime)
         : (undefined as any),
-      endTime: data?.endTime
+      endTime: data?.startTime
         ? toDateFromTimeString(data.endTime)
         : (undefined as any),
       img: undefined,
+      scope: 'GENERAL',
+      districtId: undefined,
+      communityId: undefined,
     },
   })
+
+  const [scope, setScope] = useState<'GENERAL' | 'DISTRICT' | 'COMMUNITY'>(
+    'GENERAL'
+  )
 
   const {
     register,
@@ -49,13 +57,17 @@ const EventForm = ({
     control,
   } = form
 
+  const handleScopeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setScope(event.target.value as 'GENERAL' | 'DISTRICT' | 'COMMUNITY')
+  }
+
   const onSubmit = handleSubmit((data) => {
     console.log(data)
   })
 
   return (
     <Form {...form}>
-      <form className='flex flex-col gap-8' onSubmit={onSubmit}>
+      <form className='flex flex-col gap-3' onSubmit={onSubmit}>
         <h1 className='text-xl font-semibold capitalize'>{type} Event</h1>
         <span className='text-xs text-gray-400 font-medium'>
           Event Information
@@ -103,10 +115,6 @@ const EventForm = ({
             label='End Time'
           />
         </div>
-
-        <span className='text-xs text-gray-400 font-medium'>
-          Event Description
-        </span>
         <div className='flex flex-col gap-4'>
           <div className='flex flex-col gap-6 xl:flex-row '>
             <CustomFormField
@@ -137,6 +145,36 @@ const EventForm = ({
               </p>
             )}
           </div>
+          <CustomFormField
+            fieldType={FormFieldType.SELECT}
+            control={form.control}
+            name='scope'
+            label='Scope'
+            options={[
+              { label: 'General', value: 'GENERAL' },
+              { label: 'District', value: 'DISTRICT' },
+              { label: 'Community', value: 'COMMUNITY' },
+            ]}
+            onChange={handleScopeChange}
+          />
+          {scope === 'DISTRICT' && (
+            <CustomFormField
+              fieldType={FormFieldType.SELECT}
+              control={form.control}
+              name='districtId'
+              label='District'
+              options={districtOptions}
+            />
+          )}
+          {scope === 'COMMUNITY' && (
+            <CustomFormField
+              fieldType={FormFieldType.SELECT}
+              control={form.control}
+              name='communityId'
+              label='Community'
+              options={communityOptions}
+            />
+          )}
         </div>
         <button className='bg-blue-400 text-white rounded-md p-2'>
           {type === 'create' ? 'Create' : 'Update'}
