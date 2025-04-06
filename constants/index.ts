@@ -109,13 +109,13 @@ export const menuItems = [
         icon: '/icons/worker.png',
         label: 'Community Leaders',
         href: '/list/community',
-        visible: ['ADMIN', 'LEADER'],
+        visible: ['ADMIN', 'LEADER', 'DISTRICT'],
       },
       {
         icon: '/icons/worker.png',
         label: 'Zonal Leaders',
         href: '/list/zonal',
-        visible: ['ADMIN', 'LEADER'],
+        visible: ['ADMIN', 'LEADER', 'DISTRICT'],
       },
       {
         icon: '/icons/worker.png',
@@ -133,25 +133,49 @@ export const menuItems = [
         icon: '/icons/attendance.png',
         label: 'Attendance',
         href: '/list/attendance',
-        visible: ['ADMIN', 'LEADER', 'USER', 'parent'],
+        visible: ['ADMIN', 'LEADER', 'USER', 'DISTRICT'],
       },
       {
         icon: '/icons/calendar.png',
         label: 'Events',
         href: '/list/events',
-        visible: ['ADMIN', 'LEADER', 'USER', 'parent'],
+        visible: [
+          'ADMIN',
+          'LEADER',
+          'USER',
+          'DISTRICT',
+          'CELL',
+          'COMMUNITY',
+          'ZONAL',
+        ],
       },
       {
         icon: '/icons/message.png',
         label: 'Messages',
         href: '/list/messages',
-        visible: ['ADMIN', 'LEADER', 'USER', 'parent'],
+        visible: [
+          'ADMIN',
+          'LEADER',
+          'USER',
+          'DISTRICT',
+          'CELL',
+          'COMMUNITY',
+          'ZONAL',
+        ],
       },
       {
         icon: '/icons/announcement.png',
         label: 'Announcements',
         href: 'list/announcements',
-        visible: ['ADMIN', 'LEADER', 'USER', 'parent'],
+        visible: [
+          'ADMIN',
+          'LEADER',
+          'USER',
+          'DISTRICT',
+          'CELL',
+          'COMMUNITY',
+          'ZONAL',
+        ],
       },
     ],
   },
@@ -162,20 +186,30 @@ export const menuItems = [
         icon: '/icons/profile.png',
         label: 'Profile',
         href: '/profile',
-        visible: ['ADMIN', 'LEADER', 'USER', 'parent'],
+        visible: [
+          'ADMIN',
+          'LEADER',
+          'USER',
+          'DISTRICT',
+          'CELL',
+          'COMMUNITY',
+          'ZONAL',
+        ],
       },
       {
         icon: '/icons/setting.png',
         label: 'Settings',
         href: '/settings',
-        visible: ['ADMIN', 'LEADER', 'USER', 'parent'],
+        visible: [
+          'ADMIN',
+          'LEADER',
+          'USER',
+          'DISTRICT',
+          'CELL',
+          'COMMUNITY',
+          'ZONAL',
+        ],
       },
-      // {
-      //   icon: '/assets/icons/logout.png',
-      //   label: 'Logout',
-      //   href: '/logout',
-      //   visible: ['admin', 'leader', 'member', 'worker'],
-      // },
     ],
   },
 ]
@@ -622,4 +656,14 @@ export const calendarEvents = [
     start: new Date(2024, 7, 23, 14, 0),
     end: new Date(2024, 7, 23, 14, 45),
   },
+]
+
+export const districtOptions = [
+  { label: 'Mainland', value: '65a5fd...' },
+  { label: 'Island', value: '65a5fe...' },
+]
+
+export const communityOptions = [
+  { label: 'Shomolu', value: '65a6ff...' },
+  { label: 'Yaba', value: '65a6fa...' },
 ]

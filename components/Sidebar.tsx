@@ -1,5 +1,3 @@
-// 'use client'
-
 import { menuItems } from '@/constants'
 import { authOptions } from '@/lib/auth'
 import Image from 'next/image'
@@ -11,8 +9,6 @@ import { getServerSession } from 'next-auth'
 const Sidebar = async () => {
   const session = await getServerSession(authOptions)
 
-  const role = 'ADMIN'
-
   return (
     <div className='max-h-[90%] overflow-scroll remove-scrollbar'>
       {menuItems.map((i) => (
@@ -21,10 +17,9 @@ const Sidebar = async () => {
             {i.title}
           </span>
           {i.items.map((item) => {
-            if (item.visible.includes(role)) {
+            if (item.visible.includes(session?.user.role!)) {
               return (
                 <Link
-                  // href={`/member/${user.id}/${item.href}`}
                   href={item.href}
                   key={item.label}
                   className='flex items-center justify-center lg:justify-start gap-4 text-gray-600 dark:text-gray-300 dark:hover:text-gray-600 py-2 md:px-2 rounded-md hover:bg-susuSkyLight dark:hover:bg-susuPurple'
