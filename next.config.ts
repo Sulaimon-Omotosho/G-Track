@@ -1,13 +1,17 @@
 import type { NextConfig } from 'next'
+import path from 'path'
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
     domains: [
       'avatars.githubusercontent.com',
       'lh3.googleusercontent.com',
       'images.pexels.com',
     ],
+  },
+  webpack: (config) => {
+    config.resolve.alias['@'] = path.resolve(__dirname)
+    return config
   },
 }
 
