@@ -1,4 +1,3 @@
-import { MaritalStatus } from '@/constants'
 import { z } from 'zod'
 
 export const UserFormValidation = z.object({
@@ -69,47 +68,54 @@ export const MemberFormValidation = z.object({
     }),
 })
 
-export const CreateAppointmentSchema = z.object({
-  primaryPhysician: z.string().optional(),
-  // primaryPhysician: z
-  //   .string()
-  //   .min(2, 'Select at least one doctor')
-  //   .max(500, 'Must be at least 500 characters'),
-  schedule: z.coerce.date(),
-  reason: z
-    .string()
-    .min(2, 'Reason must be at least 2 characters')
-    .max(500, 'Reason must be at most 500 characters'),
-  note: z.string().optional(),
-  cancellationReason: z.string().optional(),
-})
+export const CreateAnnouncementSchema = z
+  .object({
+    title: z
+      .string()
+      .min(4, { message: 'Title must be at least 4 characters!' }),
+    from: z.string().min(5, { message: 'From is required!' }),
+    description: z.string().min(20, { message: 'Description is required!' }),
+    date: z.date({ message: 'Date is required!' }),
+    img: z.any().optional(),
+    scope: z.enum(['GENERAL', 'DISTRICT', 'COMMUNITY']),
+    districtId: z.string().optional(),
+    communityId: z.string().optional(),
+  })
+  .refine(
+    (data) =>
+      (data.scope === 'DISTRICT' && data.districtId) ||
+      (data.scope === 'COMMUNITY' && data.communityId) ||
+      data.scope === 'GENERAL',
+    {
+      message: 'Missing region information based on scope',
+      path: ['scope'],
+    }
+  )
 
-export const ScheduleAppointmentSchema = z.object({
-  primaryPhysician: z.string().min(2, 'Select at least one doctor'),
-  schedule: z.coerce.date(),
-  reason: z.string().optional(),
-  note: z.string().optional(),
-  cancellationReason: z.string().optional(),
-})
-
-export const CancelAppointmentSchema = z.object({
-  primaryPhysician: z.string().min(2, 'Select at least one doctor'),
-  schedule: z.coerce.date(),
-  reason: z.string().optional(),
-  note: z.string().optional(),
-  cancellationReason: z
-    .string()
-    .min(2, 'Reason must be at least 2 characters')
-    .max(500, 'Reason must be at most 500 characters'),
-})
-
-export function getAppointmentSchema(type: string) {
-  switch (type) {
-    case 'create':
-      return CreateAppointmentSchema
-    case 'cancel':
-      return CancelAppointmentSchema
-    default:
-      return ScheduleAppointmentSchema
-  }
-}
+export const CreateEventSchema = z
+  .object({
+    title: z
+      .string()
+      .min(4, { message: 'Title must be at least 4 characters!' }),
+    from: z.string().min(5, { message: 'From is required!' }),
+    description: z.string().min(20, { message: 'Description is required!' }),
+    date: z.date({ message: 'Date is required!' }),
+    startTime: z
+      .union([z.string(), z.date()])
+      .transform((val) => new Date(val)),
+    endTime: z.union([z.string(), z.date()]).transform((val) => new Date(val)),
+    img: z.any().optional(),
+    scope: z.enum(['GENERAL', 'DISTRICT', 'COMMUNITY']),
+    districtId: z.string().optional(),
+    communityId: z.string().optional(),
+  })
+  .refine(
+    (data) =>
+      (data.scope === 'DISTRICT' && data.districtId) ||
+      (data.scope === 'COMMUNITY' && data.communityId) ||
+      data.scope === 'GENERAL',
+    {
+      message: 'Missing region information based on scope',
+      path: ['scope'],
+    }
+  )
