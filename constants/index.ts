@@ -46,47 +46,47 @@ export const IdentificationTypes = [
 
 export const Doctors = [
   {
-    image: '/assets/images/dr-green.png',
+    image: '/images/dr-green.png',
     name: 'John Green',
   },
   {
-    image: '/assets/images/dr-cameron.png',
+    image: '/images/dr-cameron.png',
     name: 'Leila Cameron',
   },
   {
-    image: '/assets/images/dr-livingston.png',
+    image: '/images/dr-livingston.png',
     name: 'David Livingston',
   },
   {
-    image: '/assets/images/dr-peter.png',
+    image: '/images/dr-peter.png',
     name: 'Evan Peter',
   },
   {
-    image: '/assets/images/dr-powell.png',
+    image: '/images/dr-powell.png',
     name: 'Jane Powell',
   },
   {
-    image: '/assets/images/dr-remirez.png',
+    image: '/images/dr-remirez.png',
     name: 'Alex Ramirez',
   },
   {
-    image: '/assets/images/dr-lee.png',
+    image: '/images/dr-lee.png',
     name: 'Jasmine Lee',
   },
   {
-    image: '/assets/images/dr-cruz.png',
+    image: '/images/dr-cruz.png',
     name: 'Alyana Cruz',
   },
   {
-    image: '/assets/images/dr-sharma.png',
+    image: '/images/dr-sharma.png',
     name: 'Hardik Sharma',
   },
 ]
 
 export const StatusIcon = {
-  scheduled: '/assets/icons/check.svg',
-  pending: '/assets/icons/pending.svg',
-  cancelled: '/assets/icons/cancelled.svg',
+  scheduled: '/icons/check.svg',
+  pending: '/icons/pending.svg',
+  cancelled: '/icons/cancelled.svg',
 }
 
 export const menuItems = [
@@ -94,101 +94,88 @@ export const menuItems = [
     title: 'MENU',
     items: [
       {
-        icon: '/assets/icons/home.png',
+        icon: '/icons/home.png',
         label: 'Home',
         href: '/',
         visible: ['ADMIN', 'LEADER', 'USER', 'parent'],
       },
       {
-        icon: '/assets/icons/leader.png',
+        icon: '/icons/leader.png',
         label: 'District Pastors',
         href: '/list/district',
         visible: ['ADMIN', 'LEADER'],
       },
       {
-        icon: '/assets/icons/worker.png',
+        icon: '/icons/worker.png',
         label: 'Community Leaders',
         href: '/list/community',
-        visible: ['ADMIN', 'LEADER'],
+        visible: ['ADMIN', 'LEADER', 'DISTRICT'],
       },
       {
-        icon: '/assets/icons/worker.png',
+        icon: '/icons/worker.png',
         label: 'Zonal Leaders',
         href: '/list/zonal',
-        visible: ['ADMIN', 'LEADER'],
+        visible: ['ADMIN', 'LEADER', 'DISTRICT'],
       },
       {
-        icon: '/assets/icons/worker.png',
+        icon: '/icons/worker.png',
         label: 'Cell Leaders',
         href: '/list/cell',
         visible: ['ADMIN', 'LEADER'],
       },
       {
-        icon: '/assets/icons/member.png',
+        icon: '/icons/member.png',
         label: 'Members',
         href: '/list/members',
         visible: ['ADMIN', 'LEADER'],
       },
-
-      // {
-      //   icon: '/subject.png',
-      //   label: 'Subjects',
-      //   href: '/list/subjects',
-      //   visible: ['admin'],
-      // },
-      // {
-      //   icon: '/class.png',
-      //   label: 'Classes',
-      //   href: '/list/classes',
-      //   visible: ['admin', 'leader'],
-      // },
-      // {
-      //   icon: '/lesson.png',
-      //   label: 'Lessons',
-      //   href: '/list/lessons',
-      //   visible: ['admin', 'leader'],
-      // },
-      // {
-      //   icon: '/exam.png',
-      //   label: 'Exams',
-      //   href: '/list/exams',
-      //   visible: ['admin', 'leader', 'member', 'worker'],
-      // },
-      // {
-      //   icon: '/assignment.png',
-      //   label: 'Assignments',
-      //   href: '/list/assignments',
-      //   visible: ['admin', 'leader', 'member', 'worker'],
-      // },
-      // {
-      //   icon: '/result.png',
-      //   label: 'Results',
-      //   href: '/list/results',
-      //   visible: ['admin', 'leader', 'member', 'worker'],
-      // },
       {
-        icon: '/assets/icons/attendance.png',
+        icon: '/icons/attendance.png',
         label: 'Attendance',
         href: '/list/attendance',
-        visible: ['ADMIN', 'LEADER', 'USER', 'parent'],
+        visible: ['ADMIN', 'LEADER', 'USER', 'DISTRICT'],
       },
       {
-        icon: '/assets/icons/calendar.png',
+        icon: '/icons/calendar.png',
         label: 'Events',
         href: '/list/events',
-        visible: ['ADMIN', 'LEADER', 'USER', 'parent'],
+        visible: [
+          'ADMIN',
+          'LEADER',
+          'USER',
+          'DISTRICT',
+          'CELL',
+          'COMMUNITY',
+          'ZONAL',
+        ],
       },
       {
-        icon: '/assets/icons/message.png',
+        icon: '/icons/message.png',
         label: 'Messages',
         href: '/list/messages',
-        visible: ['ADMIN', 'LEADER', 'USER', 'parent'],
+        visible: [
+          'ADMIN',
+          'LEADER',
+          'USER',
+          'DISTRICT',
+          'CELL',
+          'COMMUNITY',
+          'ZONAL',
+        ],
       },
       {
-        icon: '/assets/icons/announcement.png',
+        icon: '/icons/announcement.png',
         label: 'Announcements',
         href: 'list/announcements',
-        visible: ['ADMIN', 'LEADER', 'USER', 'parent'],
+        visible: [
+          'ADMIN',
+          'LEADER',
+          'USER',
+          'DISTRICT',
+          'CELL',
+          'COMMUNITY',
+          'ZONAL',
+        ],
       },
     ],
   },
@@ -196,23 +183,33 @@ export const menuItems = [
     title: 'OTHER',
     items: [
       {
-        icon: '/assets/icons/profile.png',
+        icon: '/icons/profile.png',
         label: 'Profile',
         href: '/profile',
-        visible: ['ADMIN', 'LEADER', 'USER', 'parent'],
+        visible: [
+          'ADMIN',
+          'LEADER',
+          'USER',
+          'DISTRICT',
+          'CELL',
+          'COMMUNITY',
+          'ZONAL',
+        ],
       },
       {
-        icon: '/assets/icons/setting.png',
+        icon: '/icons/setting.png',
         label: 'Settings',
         href: '/settings',
-        visible: ['ADMIN', 'LEADER', 'USER', 'parent'],
+        visible: [
+          'ADMIN',
+          'LEADER',
+          'USER',
+          'DISTRICT',
+          'CELL',
+          'COMMUNITY',
+          'ZONAL',
+        ],
       },
-      // {
-      //   icon: '/assets/icons/logout.png',
-      //   label: 'Logout',
-      //   href: '/logout',
-      //   visible: ['admin', 'leader', 'member', 'worker'],
-      // },
     ],
   },
 ]
@@ -659,4 +656,14 @@ export const calendarEvents = [
     start: new Date(2024, 7, 23, 14, 0),
     end: new Date(2024, 7, 23, 14, 45),
   },
+]
+
+export const districtOptions = [
+  { label: 'Mainland', value: '65a5fd...' },
+  { label: 'Island', value: '65a5fe...' },
+]
+
+export const communityOptions = [
+  { label: 'Shomolu', value: '65a6ff...' },
+  { label: 'Yaba', value: '65a6fa...' },
 ]

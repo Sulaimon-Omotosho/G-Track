@@ -17,12 +17,12 @@ const SubmitButton = ({ isLoading, className, children }: ButtonProps) => {
     <Button
       type='submit'
       disabled={pending || isLoading}
-      className={className ?? 'shad-primary-btn w-full'}
+      className={className ?? 'bg-green-600 text-white w-full'}
     >
       {pending || isLoading ? (
         <div className='flex items-center gap-4'>
           <Image
-            src='/assets/icons/loader.svg'
+            src='/icons/loader.svg'
             alt='loader'
             width={24}
             height={24}

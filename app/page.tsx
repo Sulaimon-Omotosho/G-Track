@@ -1,18 +1,17 @@
-// import LoginInForm from '@/components/forms/LoginInForm'
-// import LoginGoogle from '@/components/LoginGoogle'
-// import { ModeToggle } from '@/components/ModeToggle'
-// import { auth } from '@/lib/auth'
 import LoginInForm from '@/components/forms/LoginInForm'
+import LoginGoogle from '@/components/LoginGoogle'
+import { authOptions } from '@/lib/auth'
+import { getServerSession } from 'next-auth'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
 import React from 'react'
 
 const Home = async () => {
-  // const session = await auth()
+  const session = await getServerSession(authOptions)
 
-  // if (session?.user) {
-  //   redirect('/redirect')
-  // }
+  if (session?.user) {
+    redirect(`/${session?.user.role.toLowerCase()}`)
+  }
 
   return (
     <div className='p-4 h-[calc(100vh-6rem)]  md:h-[calc(100vh-9rem)] flex items-center justify-center'>
@@ -28,11 +27,10 @@ const Home = async () => {
         </div>
         {/* Form Container */}
         <div className=' flex flex-col gap-4 md:w-1/2 p-2'>
-          <h1 className='font-bold text-center text-xl lg:text-3xl'>Log In</h1>
           <LoginInForm />
           <div className=''>
             <p className='text-center pb-3'>Or</p>
-            {/* <LoginGoogle /> */}
+            <LoginGoogle />
           </div>
         </div>
       </section>
