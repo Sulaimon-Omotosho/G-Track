@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+  "vercel-build": "npm install --legacy-peer-deps && next build"
+}
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.8.0",
