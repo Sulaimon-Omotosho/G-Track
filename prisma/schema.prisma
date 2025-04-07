@@ -44,11 +44,14 @@ model User {
   privacyConsent         Boolean?
   contactConsent         Boolean?
   disclosureConsent         Boolean?
+
   accounts      Account[]
   sessions      Session[]
+
   cellId    String? @db.ObjectId
   cell          Cell?       @relation(fields: [cellId], references: [id])
   role      UserRole? @default(USER)
+  districtPastor District
   // Optional for WebAuthn support
   Authenticator Authenticator[]
  
@@ -102,6 +105,8 @@ model District {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String?
   campus String @default("Gbagada")
+  pastorId String? @db.ObjectId
+  pastor User? @relation(fields: [pastorId], references: [id])
   communities Community[]
    
   createdAt DateTime @default(now())
