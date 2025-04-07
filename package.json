@@ -44,10 +44,10 @@
     "@types/node": "^20.17.30",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.38",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
     "prisma": "^6.5.0",
-    "tailwindcss": "^4.0.0",
+    "tailwindcss": "^4.1.3",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2"
   },
