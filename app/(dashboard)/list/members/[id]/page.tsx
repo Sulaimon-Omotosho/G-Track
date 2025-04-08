@@ -75,7 +75,11 @@ const SingleMemberPage = async (props: { params: { id: string } }) => {
                       height={14}
                     />
                     <span>
-                      {new Intl.DateTimeFormat('en-US').format(user.birthDate)}
+                      {user.birthDate
+                        ? new Intl.DateTimeFormat('en-US').format(
+                            new Date(user.birthDate)
+                          )
+                        : 'N/A'}
                     </span>
                   </div>
                 </div>

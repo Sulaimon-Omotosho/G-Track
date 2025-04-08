@@ -3,7 +3,6 @@ import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
 import { authOptions } from '@/lib/auth'
-// import { role } from '@/constants'
 import { db } from '@/lib/db'
 import { ITEMS_PER_PAGE } from '@/lib/settings'
 import { SearchParamProps } from '@/types'
@@ -13,6 +12,29 @@ import { getServerSession } from 'next-auth'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+
+type UserWithRelations = Prisma.UserGetPayload<{
+  include: {
+    department: {
+      select: {
+        name: true
+      }
+    }
+    cell: {
+      include: {
+        zone: {
+          include: {
+            community: {
+              select: {
+                name: true
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}>
 
 const columns = [
   {
@@ -49,7 +71,6 @@ const MembersList = async ({ searchParams }: SearchParamProps) => {
   const session = await getServerSession(authOptions)
 
   const params = (await searchParams) || {}
-
   const pageParam = params.page || 1
   const p = parseInt(pageParam as string)
   const queryParams = { ...params, page: undefined }
@@ -58,7 +79,7 @@ const MembersList = async ({ searchParams }: SearchParamProps) => {
     ? params.search[0]
     : params.search || ''
 
-  const renderRow = (item: User) => (
+  const renderRow = (item: UserWithRelations) => (
     <tr
       key={item.id}
       className='border-b border-gray-200 even:bg-slate-50  hover:bg-[#F1F0FF] dark:hover:bg-[#CFCEFF]'
@@ -80,10 +101,10 @@ const MembersList = async ({ searchParams }: SearchParamProps) => {
           <p className='text-xs text-gray-500'>{item?.gender}</p>
         </div>
       </td>
-      <td className='hidden md:table-cell'>{item.department}</td>
+      <td className='hidden md:table-cell'>{item.department?.name}</td>
       <td className='hidden md:table-cell'>{item.maritalStatus}</td>
       <td className='hidden lg:table-cell'>{item.phone}</td>
-      <td className='hidden lg:table-cell'>{item.id}</td>
+      <td className='hidden lg:table-cell'>{item.cell?.zone.community.name}</td>
       <td>
         <div className='flex items-center gap-2'>
           <Link href={`/list/members/${item.id}`}>
@@ -125,7 +146,6 @@ const MembersList = async ({ searchParams }: SearchParamProps) => {
       }
     }
   }
-
   const [data, count] = await db.$transaction([
     db.user.findMany({
       where: query,
@@ -138,6 +158,11 @@ const MembersList = async ({ searchParams }: SearchParamProps) => {
                 community: { select: { name: true } },
               },
             },
+          },
+        },
+        department: {
+          select: {
+            name: true,
           },
         },
       },

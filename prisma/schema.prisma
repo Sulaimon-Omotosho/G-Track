@@ -117,6 +117,7 @@ model Zone {
 model Cell {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String?
+  address String
   zoneId String @db.ObjectId
   zone Zone @relation(fields: [zoneId], references: [id])
   members User[]

@@ -75,3 +75,27 @@ export interface FormModalProps {
   id?: number | string
   relatedData?: any
 }
+
+export interface CellTypes {
+  id: string
+  name?: string | null
+  zoneId: string
+  zone: {
+    community: {
+      name: string
+      district: {
+        name: string
+      }
+    }
+  }
+  leaderId?: string | null
+  leader?: {
+    id: string
+    name: string
+    phone: string
+    image: string
+    gender: string
+  }
+  createdAt: Date
+  updatedAt: Date
+}
