@@ -44,13 +44,16 @@ const columns = [
   },
 ]
 
-const MembersList = async ({ searchParams = {} }: SearchParamProps) => {
-  const pageParam = searchParams.page
-  const page = pageParam
-    ? parseInt(Array.isArray(pageParam) ? pageParam[0] : pageParam)
-    : 1
-  const queryParams = { ...searchParams, page: undefined }
-  const p = page ? parseInt(page as any) : 1
+const MembersList = async ({ searchParams }: SearchParamProps) => {
+  const params = (await searchParams) || {}
+
+  const pageParam = params.page || 1
+  const p = parseInt(pageParam as string)
+  const queryParams = { ...params, page: undefined }
+
+  const searchQuery = Array.isArray(params.search)
+    ? params.search[0]
+    : params.search || ''
 
   const renderRow = (item: User) => (
     <tr
@@ -107,10 +110,10 @@ const MembersList = async ({ searchParams = {} }: SearchParamProps) => {
             break
           case 'search':
             query.OR = [
-              { name: { contains: value, mode: 'insensitive' } },
-              { email: { contains: value, mode: 'insensitive' } },
-              { phone: { contains: value, mode: 'insensitive' } },
-              { address: { contains: value, mode: 'insensitive' } },
+              { name: { contains: searchQuery, mode: 'insensitive' } },
+              { email: { contains: searchQuery, mode: 'insensitive' } },
+              { phone: { contains: searchQuery, mode: 'insensitive' } },
+              { address: { contains: searchQuery, mode: 'insensitive' } },
             ]
             break
           default:
