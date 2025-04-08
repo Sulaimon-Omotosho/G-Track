@@ -2,7 +2,8 @@
 
 declare type SearchParamProps = {
   params: { [key: string]: string }
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams?: Record<string, string | string[] | undefined>
+  // searchParams: { [key: string]: string | string[] | undefined }
 }
 
 declare type Gender = 'male' | 'female' | 'other'
@@ -53,4 +54,24 @@ declare type UpdateAppointmentParams = {
   userId: string
   appointment: Appointment
   type: string
+}
+
+export interface FormModalProps {
+  table:
+    | 'user'
+    | 'cell'
+    | 'zone'
+    | 'community'
+    | 'district'
+    | 'team'
+    | 'department'
+    | 'assignment'
+    | 'result'
+    | 'attendance'
+    | 'event'
+    | 'announcement'
+  type: 'create' | 'update' | 'delete'
+  data?: any
+  id?: number | string
+  relatedData?: any
 }
