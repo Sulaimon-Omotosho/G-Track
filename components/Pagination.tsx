@@ -60,20 +60,23 @@ const Pagination = ({ page, count }: { page: number; count: number }) => {
   }
 
   return (
-    <div className='p-4 flex justify-between items-center text-gray-500'>
+    <div className='p-4 flex justify-between items-center text-gray-500 cursor-default'>
       <button
         disabled={!hasPrev}
-        // onClick={() => {
-        //   changePage(page - 1)
-        // }}
-        className='py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed'
+        onClick={() => {
+          changePage(page - 1)
+        }}
+        className='py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'
       >
         Prev
       </button>
       <div className='flex items-center gap-2 text-sm'>
         {rangeStart > 1 && (
           <>
-            <button onClick={() => changePage(1)} className='px-2 rounded-sm'>
+            <button
+              onClick={() => changePage(1)}
+              className='px-2 rounded-sm cursor-pointer'
+            >
               1
             </button>
             <span>...</span>
@@ -84,7 +87,7 @@ const Pagination = ({ page, count }: { page: number; count: number }) => {
           return (
             <button
               key={pageIndex}
-              className={`px-2 rounded-sm ${
+              className={`px-2 rounded-sm cursor-pointer ${
                 page === pageIndex ? 'bg-[#C3EBFA]' : ''
               }`}
               onClick={() => {
@@ -100,7 +103,7 @@ const Pagination = ({ page, count }: { page: number; count: number }) => {
             <span>...</span>
             <button
               onClick={() => changePage(totalPages)}
-              className='px-2 rounded-sm'
+              className='px-2 rounded-sm cursor-pointer'
             >
               {totalPages}
             </button>
@@ -125,7 +128,7 @@ const Pagination = ({ page, count }: { page: number; count: number }) => {
         onClick={() => {
           changePage(page + 1)
         }}
-        className='py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed'
+        className='py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'
       >
         Next
       </button>

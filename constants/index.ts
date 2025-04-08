@@ -10,7 +10,7 @@ export const MembersFormDefaultValues = {
   email: '',
   phone: '',
   birthDate: new Date(Date.now()),
-  gender: 'male' as Gender,
+  gender: 'male' as any,
   address: '',
   occupation: '',
   emergencyContactName: '',

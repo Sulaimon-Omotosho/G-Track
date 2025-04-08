@@ -37,7 +37,6 @@ model User {
   gender         String?
   address         String?
   occupation         String?
-  department String?
   maritalStatus         String?
   newConvert         String?
   formerReligion         String?
@@ -49,6 +48,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
+  departmentId String? @db.ObjectId
+  department Department? @relation("Department", fields: [departmentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   cellId    String? @db.ObjectId
   cell          Cell?       @relation(fields: [cellId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   role      UserRole? @default(USER)
@@ -118,7 +119,7 @@ model Cell {
   name String?
   zoneId String @db.ObjectId
   zone Zone @relation(fields: [zoneId], references: [id])
-  user User[]
+  members User[]
   
   leaderId String? @db.ObjectId @unique
   leader User? @relation("CellLeader", fields: [leaderId], references: [id])
@@ -145,6 +146,7 @@ model Department {
   name String
   desc  String?
 
+  members User[] @relation("Department")
   hodId String? @db.ObjectId @unique
   hod User? @relation("HOD", fields: [hodId], references: [id])
   teamId String? @db.ObjectId

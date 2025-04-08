@@ -1,14 +1,15 @@
 import FormContainer from '@/components/FormContainer'
-import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { role, studentsData } from '@/constants'
+import { authOptions } from '@/lib/auth'
+// import { role } from '@/constants'
 import { db } from '@/lib/db'
 import { ITEMS_PER_PAGE } from '@/lib/settings'
 import { SearchParamProps } from '@/types'
 import { Prisma, User } from '@prisma/client'
 import { UserIcon } from 'lucide-react'
+import { getServerSession } from 'next-auth'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -45,6 +46,8 @@ const columns = [
 ]
 
 const MembersList = async ({ searchParams }: SearchParamProps) => {
+  const session = await getServerSession(authOptions)
+
   const params = (await searchParams) || {}
 
   const pageParam = params.page || 1
@@ -83,12 +86,12 @@ const MembersList = async ({ searchParams }: SearchParamProps) => {
       <td className='hidden lg:table-cell'>{item.id}</td>
       <td>
         <div className='flex items-center gap-2'>
-          <Link href={`/list/district/5357249757`}>
+          <Link href={`/list/members/${item.id}`}>
             <button className='flex items-center justify-center rounded-full bg-[#C3EBFA] cursor-pointer'>
               <Image src='/icons/view.png' width={16} height={16} alt='view' />
             </button>
           </Link>
-          {role === 'admin' && (
+          {session?.user.role === 'ADMIN' && (
             <FormContainer table='user' type='delete' id={item.id as any} />
           )}
         </div>
@@ -132,7 +135,7 @@ const MembersList = async ({ searchParams }: SearchParamProps) => {
           include: {
             zone: {
               include: {
-                community: true,
+                community: { select: { name: true } },
               },
             },
           },
