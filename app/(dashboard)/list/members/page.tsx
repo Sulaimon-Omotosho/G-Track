@@ -173,7 +173,7 @@ const MembersList = async ({ searchParams }: SearchParamProps) => {
       </div>
       {/* LIST  */}
       <Table columns={columns} renderRow={renderRow} data={data} />
-      <Pagination />
+      <Pagination page={p} count={count} />
     </div>
   )
 }

@@ -2,29 +2,34 @@
 
 import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const TableSearch = () => {
   const router = useRouter()
   const [search, setSearch] = useState('')
   const searchParams = useSearchParams()
+  const prevSearchRef = useRef<string>('')
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (search.length >= 3) {
-        const params = new URLSearchParams(searchParams.toString())
+      const params = new URLSearchParams(searchParams.toString())
+
+      if (search) {
         params.set('search', search)
-        params.set('page', '1')
-        router.push(`?${params.toString()}`)
+      } else {
+        params.delete('search')
       }
-    }, 2000)
+      if (prevSearchRef.current !== search) {
+        params.set('page', '1')
+      }
+
+      prevSearchRef.current = search
+
+      router.push(`${window.location.pathname}?${params.toString()}`)
+    }, 1000)
 
     return () => clearTimeout(timeout)
   }, [search, searchParams, router])
-
-  // const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSearch(e.target.value)
-  // }
 
   return (
     <div className='w-full md:w-auto flex items-center gap-2 text-xs rounded-full ring-[1.5px] ring-gray-300 px-2'>
@@ -33,7 +38,6 @@ const TableSearch = () => {
         type='text'
         placeholder='Search...'
         value={search}
-        // onChange={handleSearchChange}
         onChange={(e) => setSearch(e.target.value)}
         className='w-[200px] p-2 bg-transparent outline-none'
       />
