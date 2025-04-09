@@ -51,7 +51,7 @@ model User {
   departmentId String? @db.ObjectId
   department Department? @relation("Department", fields: [departmentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   cellId    String? @db.ObjectId
-  cell          Cell?       @relation(fields: [cellId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  cell          Cell?       @relation("MembersToCell", fields: [cellId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   role      UserRole? @default(USER)
 
   districtPastor District? @relation("DistrictPastor")
@@ -89,7 +89,7 @@ model Community {
   name String?
   districtId String @db.ObjectId
   district District @relation(fields: [districtId], references: [id])
-  zones Zone[]
+  zones Zone[] @relation("ZonesToCells")
 
   pastorId String? @db.ObjectId @unique
   pastor User? @relation("CommunityPastor", fields: [pastorId], references: [id])
@@ -104,8 +104,8 @@ model Zone {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String?
   communityId String @db.ObjectId
-  community Community @relation(fields: [communityId], references: [id])
-  cell Cell[]
+  community Community @relation("ZonesToCells", fields: [communityId], references: [id])
+  cell Cell[] @relation("CellsToZone")
   
   leaderId String? @db.ObjectId @unique
   leader User? @relation("ZonalLeader", fields: [leaderId], references: [id])
@@ -119,8 +119,8 @@ model Cell {
   name String?
   address String
   zoneId String @db.ObjectId
-  zone Zone @relation(fields: [zoneId], references: [id])
-  members User[]
+  zone Zone @relation("CellsToZone", fields: [zoneId], references: [id])
+  members User[] @relation("MembersToCell")
   
   leaderId String? @db.ObjectId @unique
   leader User? @relation("CellLeader", fields: [leaderId], references: [id])

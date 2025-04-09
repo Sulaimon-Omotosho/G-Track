@@ -76,6 +76,54 @@ export interface FormModalProps {
   relatedData?: any
 }
 
+export interface CommunityTypes {
+  id: string
+  name?: string | null
+  districtId: string
+  district: {
+    name: string
+  }
+  pastorId?: string | null
+  pastor?: {
+    id: string
+    name: string
+    phone: string
+    image: string
+    gender: string
+  }
+  zones: {
+    reduce(
+      arg0: (total: any, zone: any) => any,
+      arg1: number
+    ): import('react').ReactNode
+    cell: []
+    createdAt: Date
+    updatedAt: Date
+  }
+}
+
+export interface ZoneTypes {
+  id: string
+  name?: string | null
+  communityId: string
+  community: {
+    district: {
+      name: string
+    }
+  }
+  leaderId?: string | null
+  leader?: {
+    id: string
+    name: string
+    phone: string
+    image: string
+    gender: string
+  }
+  cell: Array[]
+  createdAt: Date
+  updatedAt: Date
+}
+
 export interface CellTypes {
   id: string
   name?: string | null

@@ -1,13 +1,11 @@
-import FormModal from '@/components/FormModal'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { role, studentsData } from '@/constants'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { ITEMS_PER_PAGE } from '@/lib/settings'
-import { SearchParamProps } from '@/types'
-import { Prisma, User } from '@prisma/client'
+import { SearchParamProps, ZoneTypes } from '@/types'
+import { Prisma } from '@prisma/client'
 import { UserIcon } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import Image from 'next/image'
@@ -25,13 +23,13 @@ const columns = [
     className: 'hidden lg:table-cell',
   },
   {
-    header: 'District',
-    accessor: 'district',
+    header: 'No of Cells',
+    accessor: 'cells',
     className: 'hidden md:table-cell',
   },
   {
-    header: 'No of Cells',
-    accessor: 'cells',
+    header: 'District',
+    accessor: 'district',
     className: 'hidden md:table-cell',
   },
   {
@@ -122,7 +120,7 @@ const ZonalLeadersList = async ({ searchParams }: SearchParamProps) => {
 
   console.log(data[0])
 
-  const renderRow = (item: User) => (
+  const renderRow = (item: ZoneTypes) => (
     <tr
       key={item.id}
       className='border-b border-gray-200 even:bg-slate-50  hover:bg-[#F1F0FF] dark:hover:bg-[#CFCEFF]'
@@ -145,8 +143,8 @@ const ZonalLeadersList = async ({ searchParams }: SearchParamProps) => {
         </div>
       </td>
       <td className='hidden md:table-cell'>{item.name}</td>
-      <td className='hidden md:table-cell'>{item.community.district.name}</td>
       <td className='hidden lg:table-cell'>{item.cell.length}</td>
+      <td className='hidden md:table-cell'>{item.community.district.name}</td>
       <td className='hidden lg:table-cell'>{item.leader?.phone}</td>
       <td>
         <div className='flex items-center gap-2'>
