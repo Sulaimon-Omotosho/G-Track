@@ -1,18 +1,16 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
 import React, { Dispatch, SetStateAction } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import InputField from '../InputField'
-import Image from 'next/image'
-import { MemberFormValidation, UserFormValidation } from '@/lib/validation'
+import { MemberFormValidation } from '@/lib/validation'
 import CustomFormField from '../CustomFormField'
 import { FormFieldType } from './LoginInForm'
 import { FormControl } from '../ui/form'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { GenderOptions, MaritalStatus } from '@/constants'
 import { Label } from '../ui/label'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 type Inputs = z.infer<typeof MemberFormValidation>
 
@@ -27,20 +25,20 @@ const UsersForm = ({
   relatedData?: any
   data?: any
 }) => {
-  const form = useForm<z.infer<typeof MemberFormValidation>>({
-    // resolver: zodResolver(MemberFormValidation),
+  const form = useForm<Inputs>({
+    resolver: zodResolver(MemberFormValidation) as any,
     defaultValues: {
-      name: '',
-      email: '',
-      phone: '',
-      maritalStatus: 'single',
-      birthDate: new Date(),
-      gender: 'male',
-      address: '',
-      occupation: '',
-      newConvert: 'yes',
-      formerReligion: '',
-      notes: '',
+      name: data?.name || '',
+      email: data?.email || '',
+      phone: data?.phone || '',
+      maritalStatus: data?.status || 'single',
+      birthDate: data?.birthdate || new Date(),
+      gender: data.gender || 'male',
+      address: data?.address || '',
+      occupation: data?.occupation || '',
+      newConvert: data?.newConvert || 'yes',
+      formerReligion: data?.formerReligion || '',
+      notes: data?.notes || '',
       contactConsent: false,
       disclosureConsent: false,
       privacyConsent: false,

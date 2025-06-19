@@ -107,7 +107,7 @@ const DistrictLeadersList = async ({ searchParams }: SearchParamProps) => {
       where: query,
     }),
   ])
-  console.log(data[0])
+  // console.log(data[0])
 
   const renderRow = (item: DistrictTypes) => (
     <tr
@@ -117,7 +117,7 @@ const DistrictLeadersList = async ({ searchParams }: SearchParamProps) => {
       <td className='flex items-center gap-4 p-4'>
         {item.pastor?.image ? (
           <Image
-            src={item.photo!}
+            src={item.pastor.image}
             alt='image'
             width={40}
             height={40}
@@ -135,9 +135,13 @@ const DistrictLeadersList = async ({ searchParams }: SearchParamProps) => {
       <td className='hidden md:table-cell'>{item.communities.length}</td>
       <td className='hidden lg:table-cell'>
         {item.communities.reduce(
-          (total, c) =>
+          (total: any, c: { zones: any[] }) =>
             total +
-            c.zones.reduce((zTotal, z) => zTotal + (z._count?.cell ?? 0), 0),
+            c.zones.reduce(
+              (zTotal: any, z: { _count: { cell: any } }) =>
+                zTotal + (z._count?.cell ?? 0),
+              0
+            ),
           0
         )}
       </td>

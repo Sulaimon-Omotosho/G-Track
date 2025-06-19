@@ -23,10 +23,12 @@ const deleteActionMap = {
 const UsersForm = dynamic(() => import('./forms/UsersForm'), {
   loading: () => <h1>Loading...</h1>,
 })
+const AnnouncementForm = dynamic(() => import('./forms/AnnouncementForm'), {
+  loading: () => <h1>Loading...</h1>,
+})
 // const TeacherForm = dynamic(() => import('./forms/TeacherForm'), {
 //   loading: () => <h1>Loading...</h1>,
 // })
-// const AnnouncementForm = dynamic(() => import('./forms/AnnouncementForm'))
 // const AssignmentForm = dynamic(() => import('./forms/AssignmentForm'))
 // const AttendanceForm = dynamic(() => import('./forms/AttendanceForm'))
 // const ClassForm = dynamic(() => import('./forms/ClassForm'))
@@ -37,41 +39,9 @@ const UsersForm = dynamic(() => import('./forms/UsersForm'), {
 // const ResultForm = dynamic(() => import('./forms/ResultForm'))
 // const SubjectForm = dynamic(() => import('./forms/SubjectForm'))
 
-const forms: {
-  [key: string]: (
-    type: 'create' | 'update',
-    setOpen: Dispatch<SetStateAction<boolean>>,
-    data: any,
-    relatedData?: any
-  ) => JSX.Element
-} = {
-  user: (type, data, setOpen, relatedData) => (
-    <UsersForm
-      type={type}
-      data={data}
-      setOpen={setOpen}
-      relatedData={relatedData}
-    />
-  ),
-  // announcement: (type, data) => <AnnouncementForm type={type} data={data} />,
-  // assignment: (type, data) => <AssignmentForm type={type} data={data} />,
-  // attendance: (type, data) => <AttendanceForm type={type} data={data} />,
-  // class: (type, data) => <ClassForm type={type} data={data} />,
-  // event: (type, data) => <EventForm type={type} data={data} />,
-  // exam: (type, data) => <ExamForm type={type} data={data} />,
-  // lesson: (type, data) => <LessonForm type={type} data={data} />,
-  // parent: (type, data) => <ParentForm type={type} data={data} />,
-  // result: (type, data) => <ResultForm type={type} data={data} />,
-  // subject: (type, data) => <SubjectForm type={type} data={data} />,
-}
-
-const FormModal: React.FC<FormModalProps> = ({
-  table,
-  type,
-  data,
-  id,
-  relatedData,
-}) => {
+const FormModal: React.FC<
+  FormModalProps & { districts?: { name: string; id: string } }
+> = ({ table, type, data, id, relatedData, districts }) => {
   const size = type === 'create' ? 'w-8 h-8' : 'w-7 h-7'
   const bgColor =
     type === 'create'
@@ -82,6 +52,43 @@ const FormModal: React.FC<FormModalProps> = ({
 
   const [open, setOpen] = useState(false)
   const router = useRouter()
+
+  const forms: {
+    [key: string]: (
+      type: 'create' | 'update',
+      setOpen: Dispatch<SetStateAction<boolean>>,
+      data: any,
+      relatedData?: any
+    ) => JSX.Element
+  } = {
+    user: (type, data, setOpen, relatedData) => (
+      <UsersForm
+        type={type}
+        data={data}
+        setOpen={setOpen}
+        relatedData={relatedData}
+      />
+    ),
+    announcement: (type, data, setOpen, relatedData) => (
+      <AnnouncementForm
+        type={type}
+        data={data}
+        setOpen={setOpen}
+        relatedData={relatedData}
+        districts={districts}
+      />
+    ),
+    // announcement: (type, data) => <AnnouncementForm type={type} data={data} />,
+    // assignment: (type, data) => <AssignmentForm type={type} data={data} />,
+    // attendance: (type, data) => <AttendanceForm type={type} data={data} />,
+    // class: (type, data) => <ClassForm type={type} data={data} />,
+    // event: (type, data) => <EventForm type={type} data={data} />,
+    // exam: (type, data) => <ExamForm type={type} data={data} />,
+    // lesson: (type, data) => <LessonForm type={type} data={data} />,
+    // parent: (type, data) => <ParentForm type={type} data={data} />,
+    // result: (type, data) => <ResultForm type={type} data={data} />,
+    // subject: (type, data) => <SubjectForm type={type} data={data} />,
+  }
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {

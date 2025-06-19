@@ -11,7 +11,7 @@ import { notFound } from 'next/navigation'
 import React from 'react'
 
 const SingleMemberPage = async (props: { params: { id: string } }) => {
-  const id = props.params.id
+  const id = await props.params.id
   const session = getServerSession()
 
   const user = await db.user.findUnique({

@@ -152,6 +152,7 @@ export interface ZoneTypes {
 
 export interface CellTypes {
   id: string
+  address: string
   name?: string | null
   zoneId: string
   zone: {

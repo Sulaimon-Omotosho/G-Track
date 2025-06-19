@@ -28,7 +28,10 @@ enum Scope {
 model User {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
+  firstName          String?
+  lastName          String?
   email         String?         @unique
+  userName         String?         @unique
   phone         String?         
   hashedPassword String?
   emailVerified DateTime?
@@ -117,7 +120,7 @@ model Zone {
 model Cell {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String?
-  address String
+  address String?
   zoneId String @db.ObjectId
   zone Zone @relation("CellsToZone", fields: [zoneId], references: [id])
   members User[] @relation("MembersToCell")
@@ -161,7 +164,6 @@ model Announcement {
   id  String  @id @default(auto()) @map("_id") @db.ObjectId
   title   String
   from  String
-  date  DateTime
   desc  String
   img   String?
 

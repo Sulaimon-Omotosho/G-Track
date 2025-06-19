@@ -1,42 +1,61 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useState } from 'react'
+import React, {
+  Dispatch,
+  SetStateAction,
+  startTransition,
+  useActionState,
+  useEffect,
+} from 'react'
 import { z } from 'zod'
-import { Form, FormControl } from '@/components/ui/form'
+import { Form } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { CreateAnnouncementSchema } from '@/lib/validation'
 import CustomFormField from '../CustomFormField'
 import { FormFieldType } from './LoginInForm'
 import { UploadCloud } from 'lucide-react'
-import { communityOptions, districtOptions } from '@/constants'
+import { District } from '@prisma/client'
+import { createAnnouncement, updateAnnouncement } from '@/lib/actions/actions'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
 
 type Inputs = z.infer<typeof CreateAnnouncementSchema>
 
 const AnnouncementForm = ({
   type,
   data,
+  setOpen,
+  relatedData,
+  districts,
 }: {
   type: 'create' | 'update'
+  setOpen: Dispatch<SetStateAction<boolean>>
+  relatedData?: any
   data?: any
+  districts?: any
 }) => {
   const form = useForm<Inputs>({
     resolver: zodResolver(CreateAnnouncementSchema),
     defaultValues: {
       title: data?.title || '',
       from: data?.from || '',
-      date: data?.date?.slice(0, 10) || '',
-      description: data?.description || '',
-      img: undefined,
+      desc: data?.desc || '',
+      img: data?.img || '',
     },
   })
 
-  const [scope, setScope] = useState<'GENERAL' | 'DISTRICT' | 'COMMUNITY'>(
-    'GENERAL'
-  )
-  const handleScopeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setScope(event.target.value as 'GENERAL' | 'DISTRICT' | 'COMMUNITY')
-  }
+  const router = useRouter()
+
+  const districtsOptions = [
+    { value: 'campus', label: 'Campus' },
+    ...(districts
+      ? districts!.map((d: District) => ({
+          value: d.id,
+          label: d.name,
+        }))
+      : []),
+  ]
 
   const {
     register,
@@ -45,8 +64,27 @@ const AnnouncementForm = ({
     control,
   } = form
 
+  const [state, formAction] = useActionState(
+    type === 'create' ? createAnnouncement : updateAnnouncement,
+    {
+      success: false,
+      error: false,
+    }
+  )
   const onSubmit = handleSubmit((data) => {
-    console.log(data)
+    startTransition(() => {
+      formAction(data)
+    })
+  })
+
+  useEffect(() => {
+    if (state.success) {
+      toast(
+        `Announcement has been ${type === 'create' ? 'created' : 'updated'}!`
+      )
+      setOpen(false)
+      router.refresh()
+    }
   })
 
   return (
@@ -80,19 +118,13 @@ const AnnouncementForm = ({
             iconSrc='/icons/user.svg'
             iconAlt='user'
           />
-          <CustomFormField
-            fieldType={FormFieldType.DATE_PICKER}
-            control={form.control}
-            name='date'
-            label='Date'
-          />
         </div>
         <div className='flex flex-col gap-4'>
           <div className='flex flex-col gap-6 xl:flex-row '>
             <CustomFormField
               fieldType={FormFieldType.TEXTAREA}
               control={form.control}
-              name='description'
+              name='desc'
               label='Description'
               placeholder='Description...'
             />
@@ -120,33 +152,10 @@ const AnnouncementForm = ({
           <CustomFormField
             fieldType={FormFieldType.SELECT}
             control={form.control}
-            name='scope'
-            label='Scope'
-            options={[
-              { label: 'General', value: 'GENERAL' },
-              { label: 'District', value: 'DISTRICT' },
-              { label: 'Community', value: 'COMMUNITY' },
-            ]}
-            onChange={handleScopeChange}
+            name='districtId'
+            label='District'
+            options={districtsOptions}
           />
-          {scope === 'DISTRICT' && (
-            <CustomFormField
-              fieldType={FormFieldType.SELECT}
-              control={form.control}
-              name='districtId'
-              label='District'
-              options={districtOptions}
-            />
-          )}
-          {scope === 'COMMUNITY' && (
-            <CustomFormField
-              fieldType={FormFieldType.SELECT}
-              control={form.control}
-              name='communityId'
-              label='Community'
-              options={communityOptions}
-            />
-          )}
         </div>
         <button className='bg-blue-400 text-white rounded-md p-2'>
           {type === 'create' ? 'Create' : 'Update'}

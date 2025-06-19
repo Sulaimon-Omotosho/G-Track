@@ -68,29 +68,16 @@ export const MemberFormValidation = z.object({
     }),
 })
 
-export const CreateAnnouncementSchema = z
-  .object({
-    title: z
-      .string()
-      .min(4, { message: 'Title must be at least 4 characters!' }),
-    from: z.string().min(5, { message: 'From is required!' }),
-    description: z.string().min(20, { message: 'Description is required!' }),
-    date: z.date({ message: 'Date is required!' }),
-    img: z.any().optional(),
-    scope: z.enum(['GENERAL', 'DISTRICT', 'COMMUNITY']),
-    districtId: z.string().optional(),
-    communityId: z.string().optional(),
-  })
-  .refine(
-    (data) =>
-      (data.scope === 'DISTRICT' && data.districtId) ||
-      (data.scope === 'COMMUNITY' && data.communityId) ||
-      data.scope === 'GENERAL',
-    {
-      message: 'Missing region information based on scope',
-      path: ['scope'],
-    }
-  )
+export const CreateAnnouncementSchema = z.object({
+  title: z.string().min(4, { message: 'Title must be at least 4 characters!' }),
+  from: z.string().min(5, { message: 'From is required!' }),
+  desc: z.string().min(20, { message: 'Description is required!' }),
+  // date: z.date({ message: 'Date is required!' }),
+  img: z.any().optional(),
+  // scope: z.enum(['GENERAL', 'DISTRICT', 'COMMUNITY']),
+  districtId: z.string().optional(),
+  // communityId: z.string().optional(),
+})
 
 export const CreateEventSchema = z
   .object({

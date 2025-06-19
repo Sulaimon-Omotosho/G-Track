@@ -137,7 +137,7 @@ const MembersList = async ({ searchParams }: SearchParamProps) => {
               { name: { contains: searchQuery, mode: 'insensitive' } },
               { email: { contains: searchQuery, mode: 'insensitive' } },
               { phone: { contains: searchQuery, mode: 'insensitive' } },
-              { address: { contains: searchQuery, mode: 'insensitive' } },
+              // { address: { contains: searchQuery, mode: 'insensitive' } },
             ]
             break
           default:
